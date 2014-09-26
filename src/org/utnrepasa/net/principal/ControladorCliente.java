@@ -2,9 +2,11 @@ package org.utnrepasa.net.principal;
 
 import java.util.ArrayList;
 import org.utnrepasa.net.Client;
+import org.utnrepasa.net.request.CreationDataRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
 import org.utnrepasa.net.request.LoginRequestAction;
 import org.utnrepasa.net.request.RegisterRequestAction;
+import org.utnrepasa.net.util.Matter;
 import org.utnrepasa.net.util.MultiplayerGame;
 import org.utnrepasa.net.util.User;
 
@@ -87,6 +89,22 @@ public class ControladorCliente {
         vlp.setVisible(true);
     }
 
+    // CREACIÓN PARTIDA
+    public void abrirVentanaCrearPartida() {
+        Client client = new Client();
+        client.send(new CreationDataRequestAction(this.usuario.getId()));
+    }
+    
+    public void recibirDatosCreacionPartida(ArrayList<Matter> materias){
+        VentanaListaPartidas.getInstancia().setVisible(false);
+        VentanaCreacionPartida vcp = VentanaCreacionPartida.getInstancia();
+        for(Matter mat : materias){
+            vcp.agregarMateria(mat);
+        }
+        vcp.refrescarListaMaterias();
+        vcp.setVisible(true);
+    }
+    
     public static void main(String args[]) {
         boolean saltarRegistro = true;
         if (!saltarRegistro) {

@@ -70,6 +70,11 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         jLabel5.setText("Finalizadas");
 
         btnCrearPartida.setText("Crear partida");
+        btnCrearPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearPartidaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,6 +134,11 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCrearPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPartidaActionPerformed
+        ControladorCliente controlador = ControladorCliente.getInstancia();
+        controlador.abrirVentanaCrearPartida();
+    }//GEN-LAST:event_btnCrearPartidaActionPerformed
 
     public void recibirPartidasEnJuego(ArrayList<MultiplayerGame> partidasEnJuego) {
         DefaultListModel modeloPartidasEnJuego = new DefaultListModel();
