@@ -6,6 +6,7 @@ import org.utnrepasa.net.request.CreationDataRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
 import org.utnrepasa.net.request.LoginRequestAction;
 import org.utnrepasa.net.request.RegisterRequestAction;
+import org.utnrepasa.net.request.UsersRequestAction;
 import org.utnrepasa.net.util.Matter;
 import org.utnrepasa.net.util.MultiplayerGame;
 import org.utnrepasa.net.util.User;
@@ -103,6 +104,19 @@ public class ControladorCliente {
         }
         vcp.refrescarListaMaterias();
         vcp.setVisible(true);
+    }
+    
+    // OBTENER USUARIOS
+    public void solicitarUsuarios(){
+        Client client = new Client();
+        client.send(new UsersRequestAction(this.usuario.getId(), 4));
+    }
+    
+    public void recibirUsuarios(ArrayList<User> usuarios){
+        VentanaCreacionPartida.getInstancia().setVisible(false);
+        VentanaInvitaciones vi = VentanaInvitaciones.getInstancia();
+        vi.recibirUsuarios(usuarios);
+        vi.setVisible(true);
     }
     
     public static void main(String args[]) {

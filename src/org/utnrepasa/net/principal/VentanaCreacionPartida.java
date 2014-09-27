@@ -55,6 +55,11 @@ public class VentanaCreacionPartida extends javax.swing.JFrame {
         jLabel1.setText("Creación de partida");
 
         btnCrearPartida.setText("Crear");
+        btnCrearPartida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearPartidaActionPerformed(evt);
+            }
+        });
 
         slcCantidadRondas.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5" }));
 
@@ -105,6 +110,10 @@ public class VentanaCreacionPartida extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCrearPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPartidaActionPerformed
+        ControladorCliente.getInstancia().solicitarUsuarios();
+    }//GEN-LAST:event_btnCrearPartidaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearPartida;
