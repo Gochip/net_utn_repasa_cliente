@@ -1,5 +1,7 @@
 package org.utnrepasa.net.principal;
 
+import java.util.ArrayList;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.tree.DefaultTreeModel;
 import org.utnrepasa.net.util.Matter;
@@ -112,6 +114,15 @@ public class VentanaCreacionPartida extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPartidaActionPerformed
+        ComboBoxModel<Integer> modCombo = slcCantidadRondas.getModel();
+        int cantidadRondas = Integer.parseInt((String) modCombo.getSelectedItem());
+        ArrayList<Matter> materias = new ArrayList<>();
+        for(Integer ind : lstMaterias.getSelectedIndices()){
+            Matter m = (Matter)this.modelo.get(ind);
+            materias.add(m);
+        }
+        ControladorCliente controlador = ControladorCliente.getInstancia();
+        controlador.establecerConfigracionCreacionPartida(materias, cantidadRondas);
         ControladorCliente.getInstancia().solicitarUsuarios();
     }//GEN-LAST:event_btnCrearPartidaActionPerformed
 

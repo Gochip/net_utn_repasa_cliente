@@ -1,7 +1,9 @@
 package org.utnrepasa.net.principal;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import org.utnrepasa.net.Client;
+import org.utnrepasa.net.request.CreateMultiPlayerRequestAction;
 import org.utnrepasa.net.request.CreationDataRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
 import org.utnrepasa.net.request.LoginRequestAction;
@@ -21,6 +23,9 @@ public class ControladorCliente {
     private static ControladorCliente me;
     private VentanaRegistrar vr;
     private User usuario;
+    private int cantidadRondas;
+    private int preguntasPorRondas = 5;
+    private ArrayList<Matter> configuracionPartida;
 
     private ControladorCliente() {
     }
@@ -108,6 +113,11 @@ public class ControladorCliente {
     }
 
     // OBTENER USUARIOS
+    public void establecerConfigracionCreacionPartida(ArrayList<Matter> config, int cantidadRondas){
+        this.configuracionPartida = config;
+        this.cantidadRondas = cantidadRondas;
+    }
+    
     public void solicitarUsuarios() {
         Client client = new Client();
         client.send(new UsersRequestAction(this.usuario.getId(), 4));
@@ -125,9 +135,26 @@ public class ControladorCliente {
             VentanaCreacionPartida.getInstancia().setVisible(false);
             vi.recibirUsuarios(usuarios);
             vi.setVisible(true);
-        }else if(vi.isVisible()){
+        } else if (vi.isVisible()) {
             vi.recibirUsuarios(usuarios);
         }
+    }
+
+    // CREAR PARTIDA
+    public void solicitudCreacionPartida(ArrayList<User> invitados) {
+        Client client = new Client();
+        client.send(new CreateMultiPlayerRequestAction(usuario.getId(), invitados, cantidadRondas, preguntasPorRondas, configuracionPartida));
+    }
+
+    public void respuestaCreacionPartida(boolean creacionCorrecta) {
+        VentanaInvitaciones.getInstancia().setVisible(false);
+        if (creacionCorrecta) {
+            JOptionPane.showMessageDialog(null, "Se ha creado la partida con éxito");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo crear la partida");
+        }
+        Client client = new Client();
+        client.send(new GamesRequestAction(this.usuario.getId()));
     }
 
     public static void main(String args[]) {
