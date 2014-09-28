@@ -6,6 +6,7 @@ import org.utnrepasa.net.request.CreationDataRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
 import org.utnrepasa.net.request.LoginRequestAction;
 import org.utnrepasa.net.request.RegisterRequestAction;
+import org.utnrepasa.net.request.SearchUsersRequestAction;
 import org.utnrepasa.net.request.UsersRequestAction;
 import org.utnrepasa.net.util.Matter;
 import org.utnrepasa.net.util.MultiplayerGame;
@@ -95,30 +96,40 @@ public class ControladorCliente {
         Client client = new Client();
         client.send(new CreationDataRequestAction(this.usuario.getId()));
     }
-    
-    public void recibirDatosCreacionPartida(ArrayList<Matter> materias){
+
+    public void recibirDatosCreacionPartida(ArrayList<Matter> materias) {
         VentanaListaPartidas.getInstancia().setVisible(false);
         VentanaCreacionPartida vcp = VentanaCreacionPartida.getInstancia();
-        for(Matter mat : materias){
+        for (Matter mat : materias) {
             vcp.agregarMateria(mat);
         }
         vcp.refrescarListaMaterias();
         vcp.setVisible(true);
     }
-    
+
     // OBTENER USUARIOS
-    public void solicitarUsuarios(){
+    public void solicitarUsuarios() {
         Client client = new Client();
         client.send(new UsersRequestAction(this.usuario.getId(), 4));
     }
-    
-    public void recibirUsuarios(ArrayList<User> usuarios){
-        VentanaCreacionPartida.getInstancia().setVisible(false);
-        VentanaInvitaciones vi = VentanaInvitaciones.getInstancia();
-        vi.recibirUsuarios(usuarios);
-        vi.setVisible(true);
+
+    public void solicitarUsuarios(String patron) {
+        Client client = new Client();
+        client.send(new SearchUsersRequestAction(this.usuario.getId(), 4, patron));
     }
-    
+
+    public void recibirUsuarios(ArrayList<User> usuarios) {
+        VentanaCreacionPartida vcp = VentanaCreacionPartida.getInstancia();
+        VentanaInvitaciones vi = VentanaInvitaciones.getInstancia();
+        if (vcp.isVisible()) {
+            VentanaCreacionPartida.getInstancia().setVisible(false);
+            vi.recibirUsuarios(usuarios);
+            vi.setVisible(true);
+        }else if(vi.isVisible()){
+            vi.recibirUsuarios(usuarios);
+        }
+    }
+
     public static void main(String args[]) {
         boolean saltarRegistro = true;
         if (!saltarRegistro) {

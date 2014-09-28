@@ -50,6 +50,11 @@ public class VentanaInvitaciones extends javax.swing.JFrame {
         });
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(lstInvitaciones);
 
@@ -109,6 +114,10 @@ public class VentanaInvitaciones extends javax.swing.JFrame {
     private void btnInvitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvitarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnInvitarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        ControladorCliente.getInstancia().solicitarUsuarios(txtBuscar.getText());
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     
     public void recibirUsuarios(ArrayList<User> usuarios){

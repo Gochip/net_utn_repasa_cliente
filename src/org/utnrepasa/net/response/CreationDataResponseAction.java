@@ -12,7 +12,7 @@ import org.utnrepasa.net.util.Matter;
  * @version 1.0
  */
 public class CreationDataResponseAction implements ResponseAction{
-    private static final long serialVersionUID = 12;
+    private static final long serialVersionUID = 112;
     private ArrayList<Matter> materias;
 
     public CreationDataResponseAction(ArrayList<Matter> materias){
