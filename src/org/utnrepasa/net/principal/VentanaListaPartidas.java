@@ -2,8 +2,10 @@ package org.utnrepasa.net.principal;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import org.utnrepasa.net.util.Game;
 import org.utnrepasa.net.util.MultiplayerGame;
+import org.utnrepasa.net.util.Player;
 import org.utnrepasa.net.util.User;
 
 /**
@@ -13,9 +15,14 @@ import org.utnrepasa.net.util.User;
 public class VentanaListaPartidas extends javax.swing.JFrame {
 
     private static VentanaListaPartidas yo;
+    private DefaultListModel modeloPartidasEnJuego, modeloPartidasFinalizadas, modeloPartidasInvitadas, modeloPartidasCreadas;
 
     private VentanaListaPartidas() {
         initComponents();
+        modeloPartidasEnJuego = new DefaultListModel();
+        modeloPartidasFinalizadas = new DefaultListModel();
+        modeloPartidasInvitadas = new DefaultListModel();
+        modeloPartidasCreadas = new DefaultListModel();
     }
 
     public static VentanaListaPartidas getInstancia() {
@@ -48,23 +55,39 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         lstFinalizadas = new javax.swing.JList();
         jLabel5 = new javax.swing.JLabel();
         btnCrearPartida = new javax.swing.JButton();
+        btnAceptarInvitacion = new javax.swing.JButton();
+        btnJugar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Partidas");
 
+        lstPartidasEnJuego.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstPartidasEnJuego.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstPartidasEnJuegoValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstPartidasEnJuego);
 
         jLabel2.setText("En juego");
 
+        lstInvitaciones.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstInvitaciones.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstInvitacionesValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(lstInvitaciones);
 
         jLabel3.setText("Invitaciones");
 
         jLabel4.setText("Creadas");
 
+        lstCreadas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(lstCreadas);
 
+        lstFinalizadas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane4.setViewportView(lstFinalizadas);
 
         jLabel5.setText("Finalizadas");
@@ -73,6 +96,22 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         btnCrearPartida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCrearPartidaActionPerformed(evt);
+            }
+        });
+
+        btnAceptarInvitacion.setText("Aceptar invitación");
+        btnAceptarInvitacion.setEnabled(false);
+        btnAceptarInvitacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarInvitacionActionPerformed(evt);
+            }
+        });
+
+        btnJugar.setText("Jugar");
+        btnJugar.setEnabled(false);
+        btnJugar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnJugarActionPerformed(evt);
             }
         });
 
@@ -107,6 +146,10 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
                         .addGap(0, 31, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnJugar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAceptarInvitacion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCrearPartida)))
                 .addContainerGap())
         );
@@ -128,7 +171,10 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCrearPartida)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCrearPartida)
+                    .addComponent(btnAceptarInvitacion)
+                    .addComponent(btnJugar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -140,19 +186,65 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         controlador.abrirVentanaCrearPartida();
     }//GEN-LAST:event_btnCrearPartidaActionPerformed
 
+    private void lstInvitacionesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstInvitacionesValueChanged
+        int indice = lstInvitaciones.getSelectedIndex();
+        if (indice != -1) {
+            btnAceptarInvitacion.setEnabled(true);
+        }
+    }//GEN-LAST:event_lstInvitacionesValueChanged
+
+    private void btnAceptarInvitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarInvitacionActionPerformed
+        int indice = lstInvitaciones.getSelectedIndex();
+        if (indice != -1) {
+            MultiplayerGame mg = (MultiplayerGame) modeloPartidasInvitadas.getElementAt(indice);
+            int id = mg.getId();
+            ControladorCliente.getInstancia().aceptarInvitación(id);
+        }
+    }//GEN-LAST:event_btnAceptarInvitacionActionPerformed
+
+    private void lstPartidasEnJuegoValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstPartidasEnJuegoValueChanged
+        int indice = lstPartidasEnJuego.getSelectedIndex();
+        if (indice != -1) {
+            btnJugar.setEnabled(true);
+        }
+    }//GEN-LAST:event_lstPartidasEnJuegoValueChanged
+
+    private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
+        int indice = lstPartidasEnJuego.getSelectedIndex();
+        if (indice != -1) {
+            ControladorCliente controlador = ControladorCliente.getInstancia();
+            User yo = controlador.getUsuario();
+            MultiplayerGame partida = (MultiplayerGame) modeloPartidasEnJuego.getElementAt(indice);
+            Player jugador = partida.getPlayers().get(partida.getTurn());
+            if (jugador.equals(yo)) {
+                controlador.solicitarPreguntas(partida.getId());
+            }else{
+                JOptionPane.showMessageDialog(this, "No es tu turno");
+            }
+        }
+    }//GEN-LAST:event_btnJugarActionPerformed
+
     public void recibirPartidasEnJuego(ArrayList<MultiplayerGame> partidasEnJuego) {
-        DefaultListModel modeloPartidasEnJuego = new DefaultListModel();
-        DefaultListModel modeloPartidasFinalizadas = new DefaultListModel();
-        DefaultListModel modeloPartidasInvitadas = new DefaultListModel();
-        DefaultListModel modeloPartidasCreadas = new DefaultListModel();
-        for (Game partida : partidasEnJuego) {
+        System.out.println("CANTIDAD : " + partidasEnJuego.size());
+        modeloPartidasCreadas.clear();
+        modeloPartidasEnJuego.clear();
+        modeloPartidasFinalizadas.clear();
+        modeloPartidasInvitadas.clear();
+        ControladorCliente controlador = ControladorCliente.getInstancia();
+        User yo = controlador.getUsuario();
+        for (MultiplayerGame partida : partidasEnJuego) {
             if (partida.getState() == Game.STATE.STARTED) {
-                modeloPartidasEnJuego.addElement(partida);
+                Player jugador = partida.getPlayers().get(partida.getTurn());
+                if (jugador.equals(yo)) {
+                    modeloPartidasEnJuego.addElement(partida);
+                    System.out.println("ES MI TURNO");
+                } else {
+                    modeloPartidasEnJuego.addElement(partida);
+                    System.out.println("NO ES MI TURNO");
+                }
             } else if (partida.getState() == Game.STATE.FINALIZED) {
                 modeloPartidasFinalizadas.addElement(partida);
             } else if (partida.getState() == Game.STATE.WAITING) {
-                ControladorCliente controlador = ControladorCliente.getInstancia();
-                User yo = controlador.getUsuario();
                 if (partida.getCreator().equals(yo)) {
                     modeloPartidasCreadas.addElement(partida);
                 } else {
@@ -167,7 +259,9 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptarInvitacion;
     private javax.swing.JButton btnCrearPartida;
+    private javax.swing.JButton btnJugar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

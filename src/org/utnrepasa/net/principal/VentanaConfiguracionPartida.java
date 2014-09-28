@@ -10,20 +10,20 @@ import org.utnrepasa.net.util.Matter;
  *
  * @author Parisi Germán
  */
-public class VentanaCreacionPartida extends javax.swing.JFrame {
+public class VentanaConfiguracionPartida extends javax.swing.JFrame {
 
-    private static VentanaCreacionPartida yo;
+    private static VentanaConfiguracionPartida yo;
     private DefaultListModel modelo;
 
-    private VentanaCreacionPartida() {
+    private VentanaConfiguracionPartida() {
         initComponents();
         modelo = new DefaultListModel();
         lstMaterias.setModel(modelo);
     }
 
-    public static VentanaCreacionPartida getInstancia() {
+    public static VentanaConfiguracionPartida getInstancia() {
         if (yo == null) {
-            yo = new VentanaCreacionPartida();
+            yo = new VentanaConfiguracionPartida();
         }
         return yo;
     }

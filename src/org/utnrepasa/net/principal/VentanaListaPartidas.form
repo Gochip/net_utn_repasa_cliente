@@ -58,6 +58,10 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="btnJugar" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnAceptarInvitacion" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnCrearPartida" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -85,7 +89,11 @@
                   <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="btnCrearPartida" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="btnCrearPartida" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnAceptarInvitacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnJugar" alignment="1" min="-2" pref="23" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -109,7 +117,11 @@
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="selectionMode" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="lstPartidasEnJuegoValueChanged"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -130,7 +142,11 @@
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="selectionMode" type="int" value="0"/>
           </Properties>
+          <Events>
+            <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="lstInvitacionesValueChanged"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -156,6 +172,7 @@
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="selectionMode" type="int" value="0"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -172,6 +189,7 @@
             <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
               <StringArray count="0"/>
             </Property>
+            <Property name="selectionMode" type="int" value="0"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -187,6 +205,24 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCrearPartidaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnAceptarInvitacion">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Aceptar invitaci&#xf3;n"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAceptarInvitacionActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnJugar">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Jugar"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnJugarActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

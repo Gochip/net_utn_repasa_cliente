@@ -3,15 +3,18 @@ package org.utnrepasa.net.principal;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.utnrepasa.net.Client;
+import org.utnrepasa.net.request.AcceptInvitationRequestAction;
 import org.utnrepasa.net.request.CreateMultiPlayerRequestAction;
 import org.utnrepasa.net.request.CreationDataRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
 import org.utnrepasa.net.request.LoginRequestAction;
+import org.utnrepasa.net.request.QuestionsRequestAction;
 import org.utnrepasa.net.request.RegisterRequestAction;
 import org.utnrepasa.net.request.SearchUsersRequestAction;
 import org.utnrepasa.net.request.UsersRequestAction;
 import org.utnrepasa.net.util.Matter;
 import org.utnrepasa.net.util.MultiplayerGame;
+import org.utnrepasa.net.util.Question;
 import org.utnrepasa.net.util.User;
 
 /**
@@ -104,7 +107,7 @@ public class ControladorCliente {
 
     public void recibirDatosCreacionPartida(ArrayList<Matter> materias) {
         VentanaListaPartidas.getInstancia().setVisible(false);
-        VentanaCreacionPartida vcp = VentanaCreacionPartida.getInstancia();
+        VentanaConfiguracionPartida vcp = VentanaConfiguracionPartida.getInstancia();
         for (Matter mat : materias) {
             vcp.agregarMateria(mat);
         }
@@ -113,11 +116,11 @@ public class ControladorCliente {
     }
 
     // OBTENER USUARIOS
-    public void establecerConfigracionCreacionPartida(ArrayList<Matter> config, int cantidadRondas){
+    public void establecerConfigracionCreacionPartida(ArrayList<Matter> config, int cantidadRondas) {
         this.configuracionPartida = config;
         this.cantidadRondas = cantidadRondas;
     }
-    
+
     public void solicitarUsuarios() {
         Client client = new Client();
         client.send(new UsersRequestAction(this.usuario.getId(), 4));
@@ -129,10 +132,10 @@ public class ControladorCliente {
     }
 
     public void recibirUsuarios(ArrayList<User> usuarios) {
-        VentanaCreacionPartida vcp = VentanaCreacionPartida.getInstancia();
+        VentanaConfiguracionPartida vcp = VentanaConfiguracionPartida.getInstancia();
         VentanaInvitaciones vi = VentanaInvitaciones.getInstancia();
         if (vcp.isVisible()) {
-            VentanaCreacionPartida.getInstancia().setVisible(false);
+            VentanaConfiguracionPartida.getInstancia().setVisible(false);
             vi.recibirUsuarios(usuarios);
             vi.setVisible(true);
         } else if (vi.isVisible()) {
@@ -155,6 +158,33 @@ public class ControladorCliente {
         }
         Client client = new Client();
         client.send(new GamesRequestAction(this.usuario.getId()));
+    }
+
+    // ACEPTAR INVITACIÓN
+    public void aceptarInvitación(int idPartida) {
+        Client client = new Client();
+        client.send(new AcceptInvitationRequestAction(this.usuario.getId(), idPartida));
+    }
+
+    public void recibirRespuestaAceptarInvitacion(boolean aceptado, int idPartida) {
+        if (aceptado) {
+            solicitarPreguntas(idPartida);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo aceptar la invitación.");
+        }
+    }
+
+    // SOLICITAR PREGUNTAS
+    public void solicitarPreguntas(int idPartida) {
+        int cantidad = 5;
+        Client client = new Client();
+        client.send(new QuestionsRequestAction(usuario.getId(), cantidad, idPartida));
+    }
+
+    public void recibirPreguntas(ArrayList<Question> preguntas, int idPartida) {
+        VentanaPregunta vp = VentanaPregunta.getInstancia();
+        vp.setPregunta(preguntas.get(0));
+        vp.setVisible(true);
     }
 
     public static void main(String args[]) {
