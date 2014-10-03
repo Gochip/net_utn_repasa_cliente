@@ -12,7 +12,7 @@ import org.utnrepasa.net.request.QuestionsRequestAction;
 import org.utnrepasa.net.request.RegisterRequestAction;
 import org.utnrepasa.net.request.SearchUsersRequestAction;
 import org.utnrepasa.net.request.UsersRequestAction;
-import org.utnrepasa.net.util.Matter;
+import org.utnrepasa.net.util.Course;
 import org.utnrepasa.net.util.MultiplayerGame;
 import org.utnrepasa.net.util.Question;
 import org.utnrepasa.net.util.User;
@@ -28,7 +28,7 @@ public class ControladorCliente {
     private User usuario;
     private int cantidadRondas;
     private int preguntasPorRondas = 5;
-    private ArrayList<Matter> configuracionPartida;
+    private ArrayList<Course> configuracionPartida;
 
     private ControladorCliente() {
     }
@@ -105,10 +105,10 @@ public class ControladorCliente {
         client.send(new CreationDataRequestAction(this.usuario.getId()));
     }
 
-    public void recibirDatosCreacionPartida(ArrayList<Matter> materias) {
+    public void recibirDatosCreacionPartida(ArrayList<Course> materias) {
         VentanaListaPartidas.getInstancia().setVisible(false);
         VentanaConfiguracionPartida vcp = VentanaConfiguracionPartida.getInstancia();
-        for (Matter mat : materias) {
+        for (Course mat : materias) {
             vcp.agregarMateria(mat);
         }
         vcp.refrescarListaMaterias();
@@ -116,7 +116,7 @@ public class ControladorCliente {
     }
 
     // OBTENER USUARIOS
-    public void establecerConfigracionCreacionPartida(ArrayList<Matter> config, int cantidadRondas) {
+    public void establecerConfigracionCreacionPartida(ArrayList<Course> config, int cantidadRondas) {
         this.configuracionPartida = config;
         this.cantidadRondas = cantidadRondas;
     }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.tree.DefaultTreeModel;
-import org.utnrepasa.net.util.Matter;
+import org.utnrepasa.net.util.Course;
 
 /**
  *
@@ -28,7 +28,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         return yo;
     }
 
-    public void agregarMateria(Matter materia) {
+    public void agregarMateria(Course materia) {
         this.modelo.addElement(materia);
     }
     
@@ -116,9 +116,9 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
     private void btnCrearPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearPartidaActionPerformed
         ComboBoxModel<Integer> modCombo = slcCantidadRondas.getModel();
         int cantidadRondas = Integer.parseInt((String) modCombo.getSelectedItem());
-        ArrayList<Matter> materias = new ArrayList<>();
+        ArrayList<Course> materias = new ArrayList<>();
         for(Integer ind : lstMaterias.getSelectedIndices()){
-            Matter m = (Matter)this.modelo.get(ind);
+            Course m = (Course)this.modelo.get(ind);
             materias.add(m);
         }
         ControladorCliente controlador = ControladorCliente.getInstancia();
