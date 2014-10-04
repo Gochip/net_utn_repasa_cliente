@@ -5,18 +5,19 @@ import org.utnrepasa.net.RequestAction;
 
 /**
  * Esta clase solicita el inicio de sesión.
+ *
  * @author Parisi Germán
  * @version 1.0
  */
 public class LoginRequestAction implements RequestAction {
 
     private static final long serialVersionUID = 2;
-    private String userName;
-    private String password;
+    private String nombreUsuario;
+    private String clave;
 
-    public LoginRequestAction(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
+    public LoginRequestAction(String nombreUsuario, String clave) {
+        this.nombreUsuario = nombreUsuario;
+        this.clave = clave;
     }
 
     @Override

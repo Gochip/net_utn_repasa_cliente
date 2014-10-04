@@ -13,17 +13,17 @@ public class LoginResponseAction implements ResponseAction {
 
     private static final long serialVersionUID = 102;
     private User user;
-    private boolean correct;
+    private boolean iniciadoSesionExitosamente;
 
-    public LoginResponseAction(User user, boolean correct) {
+    public LoginResponseAction(User user, boolean iniciadoSesionExitosamente) {
         this.user = user;
-        this.correct = correct;
+        this.iniciadoSesionExitosamente = iniciadoSesionExitosamente;
     }
 
     @Override
     public void execute(Connection connection) {
         ControladorCliente controlador = ControladorCliente.getInstancia();
-        controlador.respuestaIniciarSesion(correct, user);
+        controlador.respuestaIniciarSesion(iniciadoSesionExitosamente, user);
         connection.close();
     }
 }

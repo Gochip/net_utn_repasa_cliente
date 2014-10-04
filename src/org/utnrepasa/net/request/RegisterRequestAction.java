@@ -4,28 +4,28 @@ import org.utnrepasa.net.RequestAction;
 import org.utnrepasa.net.Connection;
 
 /**
- * Solicita un registro de usuario.
- * 
- * Envía al servidor el nombre de usuario y la clave encriptada.
+ * Solicita un registro de usuario a partir de su nombre de usuario y la clave
+ * encriptada.
+ *
  * @author Parisi Germán
  * @version 1.0
  */
 public class RegisterRequestAction implements RequestAction {
 
     private static final long serialVersionUID = 1;
-    private String userName;
-    private String password;
+    private String nombreUsuario;
+    private String clave;
 
-    public RegisterRequestAction(String userName, String password) {
-        this.userName = userName;
-        this.password = encrypt(password);
+    public RegisterRequestAction(String nombreUsuario, String clave) {
+        this.nombreUsuario = nombreUsuario;
+        this.clave = encriptar(clave);
     }
 
-    private String encrypt(String clave) {
+    private String encriptar(String clave) {
         return clave;
     }
-    
-    private String decrypt(String clave){
+
+    private String desencriptar(String clave) {
         return clave;
     }
 
