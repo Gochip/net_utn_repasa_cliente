@@ -14,6 +14,11 @@ import org.utnrepasa.net.util.User;
 public class UsersResponseAction implements ResponseAction{
 
     private static final long serialVersionUID = 104;
+    /**
+     * Es una lista de usuarios. Puede ser null en caso que los parámetros
+     * hayan generado algún problema en el lado del servidor. Por ejemplo:
+     * que la cantidad solicitada sea <= 0.
+     */
     private ArrayList<User> usuarios;
     public UsersResponseAction(ArrayList<User> usuarios){
         this.usuarios = usuarios;
