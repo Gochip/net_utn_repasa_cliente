@@ -2,7 +2,7 @@ package org.utnrepasa.net.principal;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
+import javax.swing.JOptionPane;
 import org.utnrepasa.net.util.User;
 
 /**
@@ -13,15 +13,24 @@ import org.utnrepasa.net.util.User;
 public class VentanaInvitaciones extends javax.swing.JFrame {
 
     private static VentanaInvitaciones yo;
+
     private VentanaInvitaciones() {
         initComponents();
     }
-    
-    public static VentanaInvitaciones getInstancia(){
-        if(yo == null){
+
+    public static VentanaInvitaciones getInstancia() {
+        if (yo == null) {
             yo = new VentanaInvitaciones();
         }
         return yo;
+    }
+
+    public void recibirUsuarios(ArrayList<User> usuarios) {
+        DefaultListModel<User> modelo = new DefaultListModel<>();
+        for (User us : usuarios) {
+            modelo.addElement(us);
+        }
+        lstInvitaciones.setModel(modelo);
     }
 
     /**
@@ -113,27 +122,24 @@ public class VentanaInvitaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnInvitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvitarActionPerformed
-        DefaultListModel modeloLista = (DefaultListModel)lstInvitaciones.getModel();
+        DefaultListModel modeloLista = (DefaultListModel) lstInvitaciones.getModel();
         ArrayList<User> usuarios = new ArrayList<>();
-        for(Integer ind : lstInvitaciones.getSelectedIndices()){
-            User us = (User)modeloLista.get(ind);
+        for (Integer ind : lstInvitaciones.getSelectedIndices()) {
+            User us = (User) modeloLista.get(ind);
             usuarios.add(us);
         }
-        ControladorCliente.getInstancia().solicitudCreacionPartida(usuarios);
+        if(usuarios.size() > 0){
+            ControladorCliente.getInstancia().solicitudCreacionPartida(usuarios);
+        }else{
+            JOptionPane.showMessageDialog(this, "Debes invitar a alguien");
+        }
     }//GEN-LAST:event_btnInvitarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         ControladorCliente.getInstancia().solicitarUsuarios(txtBuscar.getText());
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    
-    public void recibirUsuarios(ArrayList<User> usuarios){
-        DefaultListModel<User> modelo = new DefaultListModel<>();
-        for(User us : usuarios){
-            modelo.addElement(us);
-        }
-        lstInvitaciones.setModel(modelo);
-    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnInvitar;

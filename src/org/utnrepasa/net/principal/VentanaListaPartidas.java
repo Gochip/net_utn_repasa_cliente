@@ -10,7 +10,7 @@ import org.utnrepasa.net.util.User;
 
 /**
  *
- * @author Gochi
+ * @author Parisi Germán
  */
 public class VentanaListaPartidas extends javax.swing.JFrame {
 
@@ -30,6 +30,10 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
             yo = new VentanaListaPartidas();
         }
         return yo;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.lblNombreUsuario.setText(nombreUsuario);
     }
 
     /**
@@ -57,9 +61,11 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         btnCrearPartida = new javax.swing.JButton();
         btnAceptarInvitacion = new javax.swing.JButton();
         btnJugar = new javax.swing.JButton();
+        lblNombreUsuario = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Partidas");
 
         lstPartidasEnJuego.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -115,6 +121,8 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
             }
         });
 
+        lblNombreUsuario.setText("jLabel6");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -122,12 +130,9 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(173, 173, 173)
-                                .addComponent(jLabel1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2))
@@ -138,12 +143,17 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 31, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblNombreUsuario)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(105, 105, 105)))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnJugar)
@@ -156,9 +166,11 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
                 .addGap(8, 8, 8)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
+                    .addComponent(lblNombreUsuario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
@@ -219,14 +231,13 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
             Player jugador = partida.getPlayers().get(partida.getTurn());
             if (jugador.equals(yo)) {
                 controlador.solicitarPreguntas(partida.getId());
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(this, "No es tu turno");
             }
         }
     }//GEN-LAST:event_btnJugarActionPerformed
 
     public void recibirPartidasEnJuego(ArrayList<MultiplayerGame> partidasEnJuego) {
-        System.out.println("CANTIDAD : " + partidasEnJuego.size());
         modeloPartidasCreadas.clear();
         modeloPartidasEnJuego.clear();
         modeloPartidasFinalizadas.clear();
@@ -257,7 +268,6 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         lstFinalizadas.setModel(modeloPartidasFinalizadas);
         lstInvitaciones.setModel(modeloPartidasInvitadas);
         lstCreadas.setModel(modeloPartidasCreadas);
-
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptarInvitacion;
@@ -272,6 +282,7 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel lblNombreUsuario;
     private javax.swing.JList lstCreadas;
     private javax.swing.JList lstFinalizadas;
     private javax.swing.JList lstInvitaciones;

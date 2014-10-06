@@ -70,6 +70,7 @@ public class ControladorCliente {
             VentanaIniciarSesion.getInstancia().setVisible(false);
             setUsuario(us);
             VentanaMenuPrincipal vmp = VentanaMenuPrincipal.getInstancia();
+            vmp.setNombreUsuario(us.getName());
             vmp.setVisible(true);
         } else {
             VentanaIniciarSesion.getInstancia().establecerMensajeError("El inicio de sesión falló.");
@@ -97,6 +98,7 @@ public class ControladorCliente {
     public void recibirPartidas(ArrayList<MultiplayerGame> partidasEnJuego) {
         VentanaMenuPrincipal.getInstancia().setVisible(false);
         VentanaListaPartidas vlp = VentanaListaPartidas.getInstancia();
+        vlp.setNombreUsuario(usuario.getName());
         vlp.recibirPartidasEnJuego(partidasEnJuego);
         vlp.setVisible(true);
     }
@@ -117,8 +119,8 @@ public class ControladorCliente {
         vcp.setVisible(true);
     }
 
-    // OBTENER USUARIOS
-    public void establecerConfigracionCreacionPartida(ArrayList<Course> config, int cantidadRondas) {
+    // OBTENER USUARIOS Y CREACIÓN PARTIDA
+    public void establecerConfiguracionCreacionPartida(ArrayList<Course> config, int cantidadRondas) {
         CreandoPartida.configuracionPartida = config;
         CreandoPartida.cantidadRondas = cantidadRondas;
     }
@@ -137,7 +139,7 @@ public class ControladorCliente {
         VentanaConfiguracionPartida vcp = VentanaConfiguracionPartida.getInstancia();
         VentanaInvitaciones vi = VentanaInvitaciones.getInstancia();
         if (vcp.isVisible()) {
-            VentanaConfiguracionPartida.getInstancia().setVisible(false);
+            vcp.setVisible(false);
             vi.recibirUsuarios(usuarios);
             vi.setVisible(true);
         } else if (vi.isVisible()) {
@@ -193,13 +195,17 @@ public class ControladorCliente {
     public void recibirPreguntas(ArrayList<Question> preguntas, int idPartida) {
         PartidaEnJuego partida = this.partidasEnJuego.get(idPartida);
         if (partida != null) {
-            partida.setNumeroPreguntaContestando(partida.getNumeroPreguntaContestando() + 1);
-            partida.setPreguntas(preguntas);
-            VentanaPregunta vp = VentanaPregunta.getInstancia();
-            vp.setIdPartida(idPartida);
-            vp.setNumeroPreguntasContestando(partida.getNumeroPreguntaContestando());
-            vp.setPregunta(preguntas.get(partida.getNumeroPreguntaContestando() - 1));
-            vp.setVisible(true);
+            if (partida.getPreguntasPorRondas() == preguntas.size()) {
+                partida.setNumeroPreguntaContestando(partida.getNumeroPreguntaContestando() + 1);
+                partida.setPreguntas(preguntas);
+                VentanaPregunta vp = VentanaPregunta.getInstancia();
+                vp.setIdPartida(idPartida);
+                vp.setNumeroPreguntasContestando(partida.getNumeroPreguntaContestando());
+                vp.setPregunta(preguntas.get(partida.getNumeroPreguntaContestando() - 1));
+                vp.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Lo siento pero no quedan preguntas en el servidor");
+            }
         }
     }
 
@@ -223,7 +229,7 @@ public class ControladorCliente {
             vp.setNumeroPreguntasContestando(partida.getNumeroPreguntaContestando());
             vp.setPregunta(preguntas.get(partida.getNumeroPreguntaContestando() - 1));
             vp.setVisible(true);
-        }else{
+        } else {
             VentanaPregunta vp = VentanaPregunta.getInstancia();
             vp.setVisible(false);
             JOptionPane.showMessageDialog(null, "Ronda finalizada");

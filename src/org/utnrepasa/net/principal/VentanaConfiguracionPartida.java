@@ -3,6 +3,7 @@ package org.utnrepasa.net.principal;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeModel;
 import org.utnrepasa.net.util.Course;
 
@@ -31,8 +32,8 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
     public void agregarMateria(Course materia) {
         this.modelo.addElement(materia);
     }
-    
-    public void refrescarListaMaterias(){
+
+    public void refrescarListaMaterias() {
         this.lstMaterias.setModel(modelo);
     }
 
@@ -117,13 +118,17 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         ComboBoxModel<Integer> modCombo = slcCantidadRondas.getModel();
         int cantidadRondas = Integer.parseInt((String) modCombo.getSelectedItem());
         ArrayList<Course> materias = new ArrayList<>();
-        for(Integer ind : lstMaterias.getSelectedIndices()){
-            Course m = (Course)this.modelo.get(ind);
+        for (Integer ind : lstMaterias.getSelectedIndices()) {
+            Course m = (Course) this.modelo.get(ind);
             materias.add(m);
         }
-        ControladorCliente controlador = ControladorCliente.getInstancia();
-        controlador.establecerConfigracionCreacionPartida(materias, cantidadRondas);
-        ControladorCliente.getInstancia().solicitarUsuarios();
+        if (materias.size() > 0) {
+            ControladorCliente controlador = ControladorCliente.getInstancia();
+            controlador.establecerConfiguracionCreacionPartida(materias, cantidadRondas);
+            controlador.solicitarUsuarios();
+        }else{
+            JOptionPane.showMessageDialog(this, "Debes seleccionar al menos una materia");
+        }
     }//GEN-LAST:event_btnCrearPartidaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

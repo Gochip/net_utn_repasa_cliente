@@ -1,5 +1,6 @@
 package org.utnrepasa.net.principal;
 
+import javax.swing.JOptionPane;
 import org.utnrepasa.net.util.Question;
 
 /**
@@ -12,6 +13,7 @@ public class VentanaPregunta extends javax.swing.JFrame {
     private static VentanaPregunta yo;
     private int idPartida;
     private int numeroPregunta;
+    private Question pregunta;
 
     private VentanaPregunta() {
         initComponents();
@@ -25,11 +27,16 @@ public class VentanaPregunta extends javax.swing.JFrame {
     }
 
     public void setPregunta(Question pregunta) {
+        this.pregunta = pregunta;
         lblDescripcion.setText(pregunta.getDescription());
         opt1.setText(pregunta.getOptions().get(0));
         opt2.setText(pregunta.getOptions().get(1));
         opt3.setText(pregunta.getOptions().get(2));
         opt4.setText(pregunta.getOptions().get(3));
+        opt1.setSelected(false);
+        opt2.setSelected(false);
+        opt3.setSelected(false);
+        opt4.setSelected(false);
     }
 
     public void setIdPartida(int idPartida) {
@@ -164,7 +171,7 @@ public class VentanaPregunta extends javax.swing.JFrame {
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
         ControladorCliente controlador = ControladorCliente.getInstancia();
-        int r = 0;
+        int r = -1;
         if (opt1.isSelected()) {
             r = 0;
         } else if (opt2.isSelected()) {
@@ -174,7 +181,11 @@ public class VentanaPregunta extends javax.swing.JFrame {
         } else if (opt4.isSelected()) {
             r = 3;
         }
-
+        if (pregunta.getCorrectOption() == r) {
+            JOptionPane.showMessageDialog(this, "Correcto");
+        } else {
+            JOptionPane.showMessageDialog(this, "Incorrecto");
+        }
         controlador.registrarRespuesta(idPartida, numeroPregunta, r);
         controlador.siguientePregunta(idPartida);
     }//GEN-LAST:event_btnEnviarActionPerformed
