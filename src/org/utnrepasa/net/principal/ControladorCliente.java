@@ -1,9 +1,12 @@
 package org.utnrepasa.net.principal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 import org.utnrepasa.net.Client;
+import org.utnrepasa.net.clases.PartidaEnJuego;
 import org.utnrepasa.net.request.AcceptInvitationRequestAction;
+import org.utnrepasa.net.request.AnswerRequestAction;
 import org.utnrepasa.net.request.CreateMultiPlayerRequestAction;
 import org.utnrepasa.net.request.CreationDataRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
@@ -26,11 +29,10 @@ public class ControladorCliente {
     private static ControladorCliente me;
     private VentanaRegistrar vr;
     private User usuario;
-    private int cantidadRondas;
-    private int preguntasPorRondas = 5;
-    private ArrayList<Course> configuracionPartida;
+    private HashMap<Integer, PartidaEnJuego> partidasEnJuego;
 
     private ControladorCliente() {
+        this.partidasEnJuego = new HashMap<>();
     }
 
     public static ControladorCliente getInstancia() {
@@ -117,8 +119,8 @@ public class ControladorCliente {
 
     // OBTENER USUARIOS
     public void establecerConfigracionCreacionPartida(ArrayList<Course> config, int cantidadRondas) {
-        this.configuracionPartida = config;
-        this.cantidadRondas = cantidadRondas;
+        CreandoPartida.configuracionPartida = config;
+        CreandoPartida.cantidadRondas = cantidadRondas;
     }
 
     public void solicitarUsuarios() {
@@ -146,7 +148,7 @@ public class ControladorCliente {
     // CREAR PARTIDA
     public void solicitudCreacionPartida(ArrayList<User> invitados) {
         Client client = new Client();
-        client.send(new CreateMultiPlayerRequestAction(usuario.getId(), invitados, cantidadRondas, preguntasPorRondas, configuracionPartida));
+        client.send(new CreateMultiPlayerRequestAction(usuario.getId(), invitados, CreandoPartida.cantidadRondas, CreandoPartida.preguntasPorRondas, CreandoPartida.configuracionPartida));
     }
 
     public void respuestaCreacionPartida(boolean creacionCorrecta) {
@@ -168,6 +170,8 @@ public class ControladorCliente {
 
     public void recibirRespuestaAceptarInvitacion(boolean aceptado, int idPartida) {
         if (aceptado) {
+            PartidaEnJuego partida = new PartidaEnJuego();
+            partidasEnJuego.put(idPartida, partida);
             solicitarPreguntas(idPartida);
         } else {
             JOptionPane.showMessageDialog(null, "No se pudo aceptar la invitación.");
@@ -176,15 +180,56 @@ public class ControladorCliente {
 
     // SOLICITAR PREGUNTAS
     public void solicitarPreguntas(int idPartida) {
-        int cantidad = 5;
+        int cantidadPreguntas = 5;
         Client client = new Client();
-        client.send(new QuestionsRequestAction(usuario.getId(), cantidad, idPartida));
+        PartidaEnJuego partida = new PartidaEnJuego();
+        partida.setCantidadRondas(5);
+        partida.setNumeroPreguntaContestando(0);
+        partida.setPreguntasPorRondas(cantidadPreguntas);
+        partidasEnJuego.put(idPartida, partida);
+        client.send(new QuestionsRequestAction(usuario.getId(), cantidadPreguntas, idPartida));
     }
 
     public void recibirPreguntas(ArrayList<Question> preguntas, int idPartida) {
-        VentanaPregunta vp = VentanaPregunta.getInstancia();
-        vp.setPregunta(preguntas.get(0));
-        vp.setVisible(true);
+        PartidaEnJuego partida = this.partidasEnJuego.get(idPartida);
+        if (partida != null) {
+            partida.setNumeroPreguntaContestando(partida.getNumeroPreguntaContestando() + 1);
+            partida.setPreguntas(preguntas);
+            VentanaPregunta vp = VentanaPregunta.getInstancia();
+            vp.setIdPartida(idPartida);
+            vp.setNumeroPreguntasContestando(partida.getNumeroPreguntaContestando());
+            vp.setPregunta(preguntas.get(partida.getNumeroPreguntaContestando() - 1));
+            vp.setVisible(true);
+        }
+    }
+
+    public void registrarRespuesta(int idPartida, int pregunta, int respuesta) {
+        PartidaEnJuego partida = this.partidasEnJuego.get(idPartida);
+        if (partida != null) {
+            partida.addRespuesta(respuesta);
+            partida.addCalificaciones(1);
+        } else {
+            System.out.println("partida nula en el met registrarRespuesta");
+        }
+    }
+
+    public void siguientePregunta(int idPartida) {
+        PartidaEnJuego partida = this.partidasEnJuego.get(idPartida);
+        if (partida.getPreguntasPorRondas() > partida.getNumeroPreguntaContestando()) {
+            partida.setNumeroPreguntaContestando(partida.getNumeroPreguntaContestando() + 1);
+            ArrayList<Question> preguntas = partida.getPreguntas();
+            VentanaPregunta vp = VentanaPregunta.getInstancia();
+            vp.setIdPartida(idPartida);
+            vp.setNumeroPreguntasContestando(partida.getNumeroPreguntaContestando());
+            vp.setPregunta(preguntas.get(partida.getNumeroPreguntaContestando() - 1));
+            vp.setVisible(true);
+        }else{
+            VentanaPregunta vp = VentanaPregunta.getInstancia();
+            vp.setVisible(false);
+            JOptionPane.showMessageDialog(null, "Ronda finalizada");
+            Client client = new Client();
+            client.send(new AnswerRequestAction(usuario.getId(), idPartida, partida.getPreguntas(), partida.getRespuestas(), partida.getCalificaciones()));
+        }
     }
 
     public static void main(String args[]) {
@@ -197,4 +242,11 @@ public class ControladorCliente {
             vis.setVisible(true);
         }
     }
+}
+
+class CreandoPartida {
+
+    public static int cantidadRondas;
+    public static int preguntasPorRondas = 5;
+    public static ArrayList<Course> configuracionPartida;
 }

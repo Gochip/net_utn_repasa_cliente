@@ -10,25 +10,38 @@ import org.utnrepasa.net.util.Question;
 public class VentanaPregunta extends javax.swing.JFrame {
 
     private static VentanaPregunta yo;
+    private int idPartida;
+    private int numeroPregunta;
+
     private VentanaPregunta() {
         initComponents();
     }
-    
-    public static VentanaPregunta getInstancia(){
-        if(yo == null){
+
+    public static VentanaPregunta getInstancia() {
+        if (yo == null) {
             yo = new VentanaPregunta();
         }
         return yo;
     }
 
-    public void setPregunta(Question pregunta){
+    public void setPregunta(Question pregunta) {
         lblDescripcion.setText(pregunta.getDescription());
         opt1.setText(pregunta.getOptions().get(0));
         opt2.setText(pregunta.getOptions().get(1));
         opt3.setText(pregunta.getOptions().get(2));
         opt4.setText(pregunta.getOptions().get(3));
     }
-    
+
+    public void setIdPartida(int idPartida) {
+        this.idPartida = idPartida;
+        this.lblIdPartida.setText(idPartida + "");
+    }
+
+    public void setNumeroPreguntasContestando(int n) {
+        this.numeroPregunta = n;
+        this.lblNumeroPreguntasContestando.setText(n + "");
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,6 +59,10 @@ public class VentanaPregunta extends javax.swing.JFrame {
         opt3 = new javax.swing.JRadioButton();
         opt4 = new javax.swing.JRadioButton();
         btnEnviar = new javax.swing.JButton();
+        lblIdPartida = new javax.swing.JLabel();
+        lblNumeroPreguntasContestando = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,35 +80,65 @@ public class VentanaPregunta extends javax.swing.JFrame {
         buttonGroup1.add(opt4);
         opt4.setText("jRadioButton4");
 
-        btnEnviar.setText("Enviar");
+        btnEnviar.setText("Continuar");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
+
+        lblIdPartida.setText("jLabel2");
+
+        lblNumeroPreguntasContestando.setText("jLabel2");
+
+        jLabel2.setText("Id de partida:");
+
+        jLabel3.setText("Nro de pregunta:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(opt4)
-                            .addComponent(opt3)
-                            .addComponent(opt2)
-                            .addComponent(opt1)
-                            .addComponent(jLabel1)))
+                        .addContainerGap()
+                        .addComponent(lblDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(151, 151, 151)
-                        .addComponent(btnEnviar)))
-                .addContainerGap(186, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(opt4)
+                                    .addComponent(opt3)
+                                    .addComponent(opt2)
+                                    .addComponent(opt1)
+                                    .addComponent(jLabel1)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(151, 151, 151)
+                                .addComponent(btnEnviar)))
+                        .addGap(0, 160, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblIdPartida))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblNumeroPreguntasContestando)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblIdPartida)
+                    .addComponent(jLabel2))
+                .addGap(7, 7, 7)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -105,17 +152,42 @@ public class VentanaPregunta extends javax.swing.JFrame {
                 .addComponent(opt4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnEnviar)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNumeroPreguntasContestando)
+                    .addComponent(jLabel3))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+        ControladorCliente controlador = ControladorCliente.getInstancia();
+        int r = 0;
+        if (opt1.isSelected()) {
+            r = 0;
+        } else if (opt2.isSelected()) {
+            r = 1;
+        } else if (opt3.isSelected()) {
+            r = 2;
+        } else if (opt4.isSelected()) {
+            r = 3;
+        }
+
+        controlador.registrarRespuesta(idPartida, numeroPregunta, r);
+        controlador.siguientePregunta(idPartida);
+    }//GEN-LAST:event_btnEnviarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEnviar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lblDescripcion;
+    private javax.swing.JLabel lblIdPartida;
+    private javax.swing.JLabel lblNumeroPreguntasContestando;
     private javax.swing.JRadioButton opt1;
     private javax.swing.JRadioButton opt2;
     private javax.swing.JRadioButton opt3;

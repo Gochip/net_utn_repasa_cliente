@@ -13,10 +13,18 @@ import org.utnrepasa.net.util.Course;
  */
 public class CreationDataResponseAction implements ResponseAction{
     private static final long serialVersionUID = 112;
+    /**
+     * Un array con las materias permitidas.
+     */
     private ArrayList<Course> materias;
+    /**
+     * Un array con las cantidades de rondas permitidas.
+     */
+    private ArrayList<Integer> rondas;
 
-    public CreationDataResponseAction(ArrayList<Course> materias){
+    public CreationDataResponseAction(ArrayList<Course> materias, ArrayList<Integer> rondas){
         this.materias = materias;
+        this.rondas = rondas;
     }
     @Override
     public void execute(Connection connection) {
