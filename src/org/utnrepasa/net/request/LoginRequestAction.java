@@ -14,8 +14,8 @@ import org.utnrepasa.net.RequestAction;
 public class LoginRequestAction implements RequestAction {
 
     private static final long serialVersionUID = 2;
-    private String nombreUsuario;
-    private String clave;
+    private final String nombreUsuario;
+    private final String clave;
 
     public LoginRequestAction(String nombreUsuario, String clave) {
         this.nombreUsuario = nombreUsuario;

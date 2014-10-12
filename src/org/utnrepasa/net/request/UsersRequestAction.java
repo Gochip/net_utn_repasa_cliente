@@ -4,7 +4,8 @@ import org.utnrepasa.net.Connection;
 import org.utnrepasa.net.RequestAction;
 
 /**
- * Solicita al servidor una cierta cantidad n de usuarios.
+ * Solicita al servidor una cierta cantidad n de usuarios excluyendo al
+ * solicitante.
  *
  * @author Parisi Germán
  * @version 1.0
@@ -15,11 +16,11 @@ public class UsersRequestAction implements RequestAction {
     /**
      * Cantidad de usuarios a solicitar
      */
-    private int cantidad;
+    private final int cantidad;
     /**
      * Id del jugador
      */
-    private int id;
+    private final int id;
 
     public UsersRequestAction(int id, int cantidad) {
         this.cantidad = cantidad;

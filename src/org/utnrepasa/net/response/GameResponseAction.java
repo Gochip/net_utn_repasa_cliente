@@ -12,7 +12,7 @@ import org.utnrepasa.net.util.MultiplayerGame;
 public class GameResponseAction implements ResponseAction{
 
     private static final long serialVersionUID = 113;
-    private MultiplayerGame partida;
+    private final MultiplayerGame partida;
     public GameResponseAction(MultiplayerGame partida){
         this.partida = partida;
     }

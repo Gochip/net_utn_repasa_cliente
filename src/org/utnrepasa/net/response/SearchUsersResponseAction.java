@@ -19,7 +19,7 @@ public class SearchUsersResponseAction implements ResponseAction {
      * Es la lista de usuarios. Puede ser null en caso que los parámetros
      * sean incorrectos.
      */
-    private ArrayList<User> usuarios;
+    private final ArrayList<User> usuarios;
 
     public SearchUsersResponseAction(ArrayList<User> usuarios) {
         this.usuarios = usuarios;

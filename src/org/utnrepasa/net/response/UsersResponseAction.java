@@ -17,9 +17,9 @@ public class UsersResponseAction implements ResponseAction{
     /**
      * Es una lista de usuarios. Puede ser null en caso que los parámetros
      * hayan generado algún problema en el lado del servidor. Por ejemplo:
-     * que la cantidad solicitada sea <= 0.
+     * que la cantidad solicitada sea menor o igual a cero.
      */
-    private ArrayList<User> usuarios;
+    private final ArrayList<User> usuarios;
     public UsersResponseAction(ArrayList<User> usuarios){
         this.usuarios = usuarios;
     }

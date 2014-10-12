@@ -15,8 +15,8 @@ import org.utnrepasa.net.util.User;
 public class LoginResponseAction implements ResponseAction {
 
     private static final long serialVersionUID = 102;
-    private User user;
-    private boolean iniciadoSesionExitosamente;
+    private final User user;
+    private final boolean iniciadoSesionExitosamente;
 
     public LoginResponseAction(User user, boolean iniciadoSesionExitosamente) {
         this.user = user;

@@ -14,8 +14,8 @@ import org.utnrepasa.net.util.Question;
 public class QuestionsResponseAction implements ResponseAction {
 
     private static final long serialVersionUID = 108;
-    private ArrayList<Question> preguntas;
-    private int idPartida;
+    private final ArrayList<Question> preguntas;
+    private final int idPartida;
     public QuestionsResponseAction(ArrayList<Question> preguntas, int idPartida) {
         this.preguntas = preguntas;
         this.idPartida = idPartida;

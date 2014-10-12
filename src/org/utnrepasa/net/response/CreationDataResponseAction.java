@@ -16,11 +16,11 @@ public class CreationDataResponseAction implements ResponseAction{
     /**
      * Un array con las materias permitidas.
      */
-    private ArrayList<Course> materias;
+    private final ArrayList<Course> materias;
     /**
      * Un array con las cantidades de rondas permitidas.
      */
-    private ArrayList<Integer> rondas;
+    private final ArrayList<Integer> rondas;
 
     public CreationDataResponseAction(ArrayList<Course> materias, ArrayList<Integer> rondas){
         this.materias = materias;

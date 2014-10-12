@@ -3,7 +3,6 @@ package org.utnrepasa.net.response;
 import org.utnrepasa.net.Connection;
 import org.utnrepasa.net.ResponseAction;
 import org.utnrepasa.net.principal.ControladorCliente;
-import org.utnrepasa.net.request.QuestionsRequestAction;
 
 /**
  *
@@ -13,9 +12,9 @@ import org.utnrepasa.net.request.QuestionsRequestAction;
 public class AcceptInvitationResponseAction implements ResponseAction {
 
     private static final long serialVersionUID = 107;
-    private boolean correcto;
-    private int id;
-    private int idPartida;
+    private final boolean correcto;
+    private final int id;
+    private final int idPartida;
 
     public AcceptInvitationResponseAction(int id, boolean correcto, int idPartida) {
         this.id = id;

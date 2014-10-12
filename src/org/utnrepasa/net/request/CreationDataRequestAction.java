@@ -11,7 +11,7 @@ import org.utnrepasa.net.RequestAction;
 public class CreationDataRequestAction implements RequestAction{
 
     private static final long serialVersionUID = 12;
-    private int id;
+    private final int id;
     public CreationDataRequestAction(int id){
         this.id = id;
     }

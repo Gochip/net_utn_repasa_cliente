@@ -10,8 +10,8 @@ import org.utnrepasa.net.RequestAction;
 public class GameRequestAction implements RequestAction {
 
     private static final long serialVersionUID = 13;
-    private int idPartida;
-    private int idUsuario;
+    private final int idPartida;
+    private final int idUsuario;
 
     public GameRequestAction(int idUsuario, int idPartida) {
         this.idPartida = idPartida;

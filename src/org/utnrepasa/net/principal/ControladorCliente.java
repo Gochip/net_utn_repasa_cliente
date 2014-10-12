@@ -8,7 +8,7 @@ import org.utnrepasa.net.Client;
 import org.utnrepasa.net.clases.PartidaEnJuego;
 import org.utnrepasa.net.request.AcceptInvitationRequestAction;
 import org.utnrepasa.net.request.AnswerRequestAction;
-import org.utnrepasa.net.request.CreateMultiPlayerRequestAction;
+import org.utnrepasa.net.request.CreateMultiplayerRequestAction;
 import org.utnrepasa.net.request.CreationDataRequestAction;
 import org.utnrepasa.net.request.GameRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
@@ -171,7 +171,7 @@ public class ControladorCliente {
     // CREAR PARTIDA
     public void solicitudCreacionPartida(ArrayList<User> invitados) {
         Client client = new Client();
-        client.send(new CreateMultiPlayerRequestAction(usuario.getId(), invitados, CreandoPartida.cantidadRondas, CreandoPartida.preguntasPorRondas, CreandoPartida.configuracionPartida));
+        client.send(new CreateMultiplayerRequestAction(usuario.getId(), invitados, CreandoPartida.cantidadRondas, CreandoPartida.preguntasPorRondas, CreandoPartida.configuracionPartida));
     }
 
     public void respuestaCreacionPartida(boolean creacionCorrecta) {

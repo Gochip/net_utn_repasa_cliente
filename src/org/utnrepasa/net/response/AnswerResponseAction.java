@@ -16,17 +16,17 @@ public class AnswerResponseAction implements ResponseAction {
     /**
      * Retorna el mismo id de usuario.
      */
-    private int id;
+    private final int id;
 
     /**
      * Una bandera que indica si se pudo guardar con éxito.
      */
-    private boolean exito;
+    private final boolean exito;
 
     /**
      * Una bandera que indica si la partida está finalizada.
      */
-    private boolean partidaFinalizada;
+    private final boolean partidaFinalizada;
 
     /**
      * Datos del estado de la partida.

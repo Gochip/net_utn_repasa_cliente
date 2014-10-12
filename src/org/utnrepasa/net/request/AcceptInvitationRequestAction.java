@@ -11,8 +11,8 @@ import org.utnrepasa.net.RequestAction;
 public class AcceptInvitationRequestAction implements RequestAction{
 
     private static final long serialVersionUID = 7;
-    private int id;
-    private int idPartida;
+    private final int id;
+    private final int idPartida;
     public AcceptInvitationRequestAction(int id, int idPartida){
         this.id = id;
         this.idPartida = idPartida;

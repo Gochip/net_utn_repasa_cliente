@@ -16,17 +16,17 @@ public class SearchUsersRequestAction implements RequestAction {
     /**
      * Id del jugador solicitante.
      */
-    private int id;
+    private final int id;
     /**
      * Es la cantidad máxima de usuarios solicitados.
      */
-    private int n;
+    private final int n;
     /**
      * Es el nombre de usuario por el cual buscar. En el servidor se lo
      * interpreta como un patrón, por ejemplo, el patrón J traerá a todos los
      * usuarios que tengan una J en su nombre de usuario.
      */
-    private String nombre;
+    private final String nombre;
 
     public SearchUsersRequestAction(int id, int n, String nombre) {
         this.id = id;

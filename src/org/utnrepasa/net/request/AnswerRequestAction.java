@@ -16,14 +16,14 @@ public class AnswerRequestAction implements RequestAction{
     /**
      * Es el id del usuario que envía las respuestas.
      */
-    private int id;
+    private final int id;
     
     /**
      * Es el id de la partida.
      */
-    private int idPartida;
+    private final int idPartida;
     
-    private int ronda;
+    private final int ronda;
     
     /**
      * Son las preguntas que está respondiendo.
