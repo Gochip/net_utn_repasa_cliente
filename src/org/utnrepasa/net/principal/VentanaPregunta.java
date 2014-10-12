@@ -112,19 +112,14 @@ public class VentanaPregunta extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(lblDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(opt4)
-                                    .addComponent(opt3)
-                                    .addComponent(opt2)
-                                    .addComponent(opt1)
-                                    .addComponent(jLabel1)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(151, 151, 151)
-                                .addComponent(btnEnviar)))
-                        .addGap(0, 160, Short.MAX_VALUE))
+                            .addComponent(opt4)
+                            .addComponent(opt3)
+                            .addComponent(opt2)
+                            .addComponent(opt1)
+                            .addComponent(jLabel1))
+                        .addGap(0, 274, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,6 +132,10 @@ public class VentanaPregunta extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(lblNumeroPreguntasContestando)))))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btnEnviar)
+                .addGap(152, 152, 152))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,9 +156,9 @@ public class VentanaPregunta extends javax.swing.JFrame {
                 .addComponent(opt3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(opt4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 3, Short.MAX_VALUE)
                 .addComponent(btnEnviar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblNumeroPreguntasContestando)
                     .addComponent(jLabel3))
@@ -186,6 +185,7 @@ public class VentanaPregunta extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Incorrecto");
         }
+        buttonGroup1.clearSelection();
         controlador.registrarRespuesta(idPartida, numeroPregunta, r);
         controlador.siguientePregunta(idPartida);
     }//GEN-LAST:event_btnEnviarActionPerformed

@@ -23,6 +23,8 @@ public class AnswerRequestAction implements RequestAction{
      */
     private int idPartida;
     
+    private int ronda;
+    
     /**
      * Son las preguntas que está respondiendo.
      */
@@ -36,9 +38,10 @@ public class AnswerRequestAction implements RequestAction{
      * Son las calificaciones de cada pregunta.
      */
     private ArrayList<Integer> calificaciones;
-    public AnswerRequestAction(int idUsuario, int idPartida, ArrayList<Question> preguntas, ArrayList<Integer> respuestas, ArrayList<Integer> calificaciones){
+    public AnswerRequestAction(int idUsuario, int idPartida, int ronda, ArrayList<Question> preguntas, ArrayList<Integer> respuestas, ArrayList<Integer> calificaciones){
         this.id = idUsuario;
         this.idPartida = idPartida;
+        this.ronda = ronda;
         this.preguntas = preguntas;
         this.respuestas = respuestas;
         this.calificaciones = calificaciones;

@@ -2,6 +2,7 @@ package org.utnrepasa.net.response;
 
 import org.utnrepasa.net.Connection;
 import org.utnrepasa.net.ResponseAction;
+import org.utnrepasa.net.principal.ControladorCliente;
 import org.utnrepasa.net.util.MultiplayerGame;
 
 /**
@@ -40,7 +41,8 @@ public class AnswerResponseAction implements ResponseAction {
     }
     @Override
     public void execute(Connection connection) {
-        System.out.println(exito);
+        ControladorCliente controlador = ControladorCliente.getInstancia();
+        controlador.mostrarResumenPartida(partida);
         connection.close();
     }
 }

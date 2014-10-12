@@ -2,6 +2,7 @@ package org.utnrepasa.net.principal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.utnrepasa.net.Client;
 import org.utnrepasa.net.clases.PartidaEnJuego;
@@ -9,6 +10,7 @@ import org.utnrepasa.net.request.AcceptInvitationRequestAction;
 import org.utnrepasa.net.request.AnswerRequestAction;
 import org.utnrepasa.net.request.CreateMultiPlayerRequestAction;
 import org.utnrepasa.net.request.CreationDataRequestAction;
+import org.utnrepasa.net.request.GameRequestAction;
 import org.utnrepasa.net.request.GamesRequestAction;
 import org.utnrepasa.net.request.LoginRequestAction;
 import org.utnrepasa.net.request.QuestionsRequestAction;
@@ -27,7 +29,7 @@ import org.utnrepasa.net.util.User;
 public class ControladorCliente {
 
     private static ControladorCliente me;
-    private VentanaRegistrar vr;
+    private JFrame actual;
     private User usuario;
     private HashMap<Integer, PartidaEnJuego> partidasEnJuego;
 
@@ -77,6 +79,13 @@ public class ControladorCliente {
         }
     }
 
+    public void abrirMenuPrincipal(JFrame anterior) {
+        anterior.setVisible(false);
+        VentanaMenuPrincipal vmp = VentanaMenuPrincipal.getInstancia();
+        vmp.setNombreUsuario(this.usuario.getName());
+        vmp.setVisible(true);
+    }
+
     private void setUsuario(User us) {
         this.usuario = us;
     }
@@ -95,11 +104,11 @@ public class ControladorCliente {
         }
     }
 
-    public void recibirPartidas(ArrayList<MultiplayerGame> partidasEnJuego) {
+    public void recibirPartidas(ArrayList<MultiplayerGame> partidas) {
         VentanaMenuPrincipal.getInstancia().setVisible(false);
         VentanaListaPartidas vlp = VentanaListaPartidas.getInstancia();
         vlp.setNombreUsuario(usuario.getName());
-        vlp.recibirPartidasEnJuego(partidasEnJuego);
+        vlp.recibirPartidasEnJuego(partidas);
         vlp.setVisible(true);
     }
 
@@ -203,7 +212,7 @@ public class ControladorCliente {
                 vp.setNumeroPreguntasContestando(partida.getNumeroPreguntaContestando());
                 vp.setPregunta(preguntas.get(partida.getNumeroPreguntaContestando() - 1));
                 vp.setVisible(true);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "Lo siento pero no quedan preguntas en el servidor");
             }
         }
@@ -234,20 +243,57 @@ public class ControladorCliente {
             vp.setVisible(false);
             JOptionPane.showMessageDialog(null, "Ronda finalizada");
             Client client = new Client();
-            client.send(new AnswerRequestAction(usuario.getId(), idPartida, partida.getPreguntas(), partida.getRespuestas(), partida.getCalificaciones()));
+            MultiplayerGame mg = partida.getMultiplayerGame();
+            if (mg != null) {
+                client.send(new AnswerRequestAction(usuario.getId(), idPartida, partida.getMultiplayerGame().getCurrentRound(), partida.getPreguntas(), partida.getRespuestas(), partida.getCalificaciones()));
+            } else {
+                client.send(new AnswerRequestAction(usuario.getId(), idPartida, 1, partida.getPreguntas(), partida.getRespuestas(), partida.getCalificaciones()));
+            }
+        }
+    }
+
+    public void mostrarResumenPartida(MultiplayerGame mg) {
+        VentanaMostrarResumenPartida vmp = VentanaMostrarResumenPartida.getInstancia(mg);
+        PartidaEnJuego pj = this.partidasEnJuego.get(mg.getId());
+        if (pj != null) {
+            pj.setMultiplayerGame(mg);
+            vmp.cambiarPartida(mg);
+            vmp.setVisible(true);
+        } else {
+            vmp.cambiarPartida(mg);
+            vmp.setVisible(true);
+        }
+    }
+
+    public void solicitarDatosPartida(int idPartida) {
+        Client client = new Client();
+        client.send(new GameRequestAction(this.usuario.getId(), idPartida));
+    }
+
+    public void recibirDatosPartida(MultiplayerGame mg) {
+        VentanaListaPartidas vlp = VentanaListaPartidas.getInstancia();
+        vlp.setVisible(false);
+        mostrarResumenPartida(mg);
+    }
+
+    public void iniciar() {
+        boolean saltarRegistro = true;
+        if (!saltarRegistro) {
+            VentanaRegistrar vr = VentanaRegistrar.getInstancia();
+            this.actual = vr;
+            vr.setVisible(true);
+        } else {
+            VentanaIniciarSesion vis = VentanaIniciarSesion.getInstancia();
+            this.actual = vis;
+            vis.setVisible(true);
         }
     }
 
     public static void main(String args[]) {
-        boolean saltarRegistro = true;
-        if (!saltarRegistro) {
-            VentanaRegistrar vr = VentanaRegistrar.getInstancia();
-            vr.setVisible(true);
-        } else {
-            VentanaIniciarSesion vis = VentanaIniciarSesion.getInstancia();
-            vis.setVisible(true);
-        }
+        ControladorCliente controlador = ControladorCliente.getInstancia();
+        controlador.iniciar();
     }
+
 }
 
 class CreandoPartida {

@@ -71,6 +71,10 @@ public class PartidaEnJuego {
         return this.numeroPreguntaContestando;
     }
     
+    public MultiplayerGame getMultiplayerGame(){
+        return this.partida;
+    }
+    
     public void setPreguntas(ArrayList<Question> preguntas) {
         this.preguntas = preguntas;
     }
@@ -97,6 +101,10 @@ public class PartidaEnJuego {
     
     public void setNumeroPreguntaContestando(int n){
         this.numeroPreguntaContestando = n;
+    }
+    
+    public void setMultiplayerGame(MultiplayerGame mg){
+        this.partida = mg;
     }
 
 }
