@@ -5,6 +5,8 @@ import org.utnrepasa.net.RequestAction;
 
 /**
  * Esta clase solicita el inicio de sesión.
+ * Se envía como parámetro al nombre de usuario y a la clave.
+ * La clave viaja en texto plano.
  *
  * @author Parisi Germán
  * @version 1.0

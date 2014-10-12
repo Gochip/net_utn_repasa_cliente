@@ -34,7 +34,7 @@ public class GamesResponseAction implements ResponseAction {
     @Override
     public void execute(Connection connection) {
         ControladorCliente controlador = ControladorCliente.getInstancia();
-        controlador.recibirPartidas(games);
+        controlador.respuestaSolicitarPartidas(games);
         connection.close();
     }
 }

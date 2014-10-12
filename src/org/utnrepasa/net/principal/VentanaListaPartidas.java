@@ -18,6 +18,7 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
 
     private static VentanaListaPartidas yo;
     private ModeloListaPartidas modeloPartidasEnJuego, modeloPartidasFinalizadas, modeloPartidasInvitadas, modeloPartidasCreadas;
+    private MultiplayerGame ultimoSeleccionado;
 
     private VentanaListaPartidas() {
         initComponents();
@@ -94,6 +95,11 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         jLabel4.setText("Creadas");
 
         lstCreadas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstCreadas.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                lstCreadasValueChanged(evt);
+            }
+        });
         jScrollPane3.setViewportView(lstCreadas);
 
         lstFinalizadas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -225,13 +231,16 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         int indice = lstInvitaciones.getSelectedIndex();
         if (indice != -1) {
             btnAceptarInvitacion.setEnabled(true);
+            ultimoSeleccionado = modeloPartidasInvitadas.getMultiplayerGame(lstInvitaciones.getSelectedIndex());
+        }else{
+            btnAceptarInvitacion.setEnabled(false);
         }
     }//GEN-LAST:event_lstInvitacionesValueChanged
 
     private void btnAceptarInvitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarInvitacionActionPerformed
         int indice = lstInvitaciones.getSelectedIndex();
         if (indice != -1) {
-            MultiplayerGame mg = modeloPartidasEnJuego.getMultiplayerGame(indice);
+            MultiplayerGame mg = modeloPartidasInvitadas.getMultiplayerGame(indice);
             int id = mg.getId();
             ControladorCliente.getInstancia().aceptarInvitación(id);
         }
@@ -241,6 +250,11 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         int indice = lstPartidasEnJuego.getSelectedIndex();
         if (indice != -1) {
             btnJugar.setEnabled(true);
+            btnVer.setEnabled(true);
+            ultimoSeleccionado = modeloPartidasEnJuego.getMultiplayerGame(indice);
+        }else{
+            btnJugar.setEnabled(false);
+            btnVer.setEnabled(false);
         }
     }//GEN-LAST:event_lstPartidasEnJuegoValueChanged
 
@@ -260,20 +274,30 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnJugarActionPerformed
 
     private void lstFinalizadasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstFinalizadasValueChanged
-        int indiceSeleccionado = lstFinalizadas.getSelectedIndex();
-        if(indiceSeleccionado >= 0){
+        int indice = lstFinalizadas.getSelectedIndex();
+        if (indice >= 0) {
             btnVer.setEnabled(true);
-        }else{
+            ultimoSeleccionado = modeloPartidasFinalizadas.getMultiplayerGame(indice);
+        } else {
             btnVer.setEnabled(false);
         }
     }//GEN-LAST:event_lstFinalizadasValueChanged
 
     private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
         ControladorCliente controlador = ControladorCliente.getInstancia();
-        System.out.println(lstFinalizadas.getSelectedIndex());
-        MultiplayerGame mg = modeloPartidasFinalizadas.getMultiplayerGame(lstFinalizadas.getSelectedIndex());
+        MultiplayerGame mg = ultimoSeleccionado;
         controlador.solicitarDatosPartida(mg.getId());
     }//GEN-LAST:event_btnVerActionPerformed
+
+    private void lstCreadasValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstCreadasValueChanged
+        int indiceSeleccionado = lstCreadas.getSelectedIndex();
+        if (indiceSeleccionado >= 0) {
+            btnVer.setEnabled(true);
+            ultimoSeleccionado = modeloPartidasCreadas.getMultiplayerGame(lstCreadas.getSelectedIndex());
+        } else {
+            btnVer.setEnabled(false);
+        }
+    }//GEN-LAST:event_lstCreadasValueChanged
 
     public void recibirPartidasEnJuego(ArrayList<MultiplayerGame> partidasEnJuego) {
         modeloPartidasCreadas.clear();
@@ -285,13 +309,7 @@ public class VentanaListaPartidas extends javax.swing.JFrame {
         for (MultiplayerGame partida : partidasEnJuego) {
             if (partida.getState() == Game.STATE.STARTED) {
                 Player jugador = partida.getPlayerTurn();
-                if (jugador.equals(yo)) {
-                    modeloPartidasEnJuego.agregarPartida(partida);
-                    System.out.println("ES MI TURNO");
-                } else {
-                    modeloPartidasEnJuego.agregarPartida(partida);
-                    System.out.println("NO ES MI TURNO");
-                }
+                modeloPartidasEnJuego.agregarPartida(partida);
             } else if (partida.getState() == Game.STATE.FINALIZED) {
                 modeloPartidasFinalizadas.agregarPartida(partida);
             } else if (partida.getState() == Game.STATE.WAITING) {

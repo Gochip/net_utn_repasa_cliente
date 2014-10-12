@@ -6,6 +6,9 @@ import org.utnrepasa.net.principal.ControladorCliente;
 import org.utnrepasa.net.util.User;
 
 /**
+ * Respuesta de un inicio de sesión. Contiene el elemento User mandado por el
+ * servidor y una bandera indicando si se puedo iniciar sesión exitosamente.
+ *
  * @author Parisi Germán
  * @version 1.0
  */

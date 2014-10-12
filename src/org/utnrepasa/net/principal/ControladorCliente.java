@@ -63,8 +63,12 @@ public class ControladorCliente {
 
     // INICIO DE SESIÓN
     public void iniciarSesion(String nombreUsuario, String clave) {
-        Client client = new Client();
-        client.send(new LoginRequestAction(nombreUsuario, clave));
+        try {
+            Client client = new Client();
+            client.send(new LoginRequestAction(nombreUsuario, clave));
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(actual, "El servidor se ha caído");
+        }
     }
 
     public void respuestaIniciarSesion(boolean correcto, User us) {
@@ -72,6 +76,7 @@ public class ControladorCliente {
             VentanaIniciarSesion.getInstancia().setVisible(false);
             setUsuario(us);
             VentanaMenuPrincipal vmp = VentanaMenuPrincipal.getInstancia();
+            this.actual = vmp;
             vmp.setNombreUsuario(us.getName());
             vmp.setVisible(true);
         } else {
@@ -100,16 +105,21 @@ public class ControladorCliente {
             Client client = new Client();
             client.send(new GamesRequestAction(usuario.getId()));
         } else {
-            System.out.println("El usuario es nulo");
+            JOptionPane.showMessageDialog(this.actual, "Ocurrio un error grave. El usuario es nulo.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    public void recibirPartidas(ArrayList<MultiplayerGame> partidas) {
-        VentanaMenuPrincipal.getInstancia().setVisible(false);
-        VentanaListaPartidas vlp = VentanaListaPartidas.getInstancia();
-        vlp.setNombreUsuario(usuario.getName());
-        vlp.recibirPartidasEnJuego(partidas);
-        vlp.setVisible(true);
+    public void respuestaSolicitarPartidas(ArrayList<MultiplayerGame> partidas) {
+        if (partidas != null) {
+            this.actual.setVisible(false);
+            VentanaListaPartidas vlp = VentanaListaPartidas.getInstancia();
+            this.actual = vlp;
+            vlp.setNombreUsuario(usuario.getName());
+            vlp.recibirPartidasEnJuego(partidas);
+            vlp.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(actual, "Ha ocurrido un problema con la conexión al servidor.");
+        }
     }
 
     // CREACIÓN PARTIDA
@@ -119,11 +129,13 @@ public class ControladorCliente {
     }
 
     public void recibirDatosCreacionPartida(ArrayList<Course> materias) {
-        VentanaListaPartidas.getInstancia().setVisible(false);
+        this.actual.setVisible(false);
         VentanaConfiguracionPartida vcp = VentanaConfiguracionPartida.getInstancia();
+        this.actual.setVisible(true);
         for (Course mat : materias) {
             vcp.agregarMateria(mat);
         }
+        
         vcp.refrescarListaMaterias();
         vcp.setVisible(true);
     }
@@ -254,6 +266,7 @@ public class ControladorCliente {
 
     public void mostrarResumenPartida(MultiplayerGame mg) {
         VentanaMostrarResumenPartida vmp = VentanaMostrarResumenPartida.getInstancia(mg);
+        this.actual = vmp;
         PartidaEnJuego pj = this.partidasEnJuego.get(mg.getId());
         if (pj != null) {
             pj.setMultiplayerGame(mg);
@@ -271,8 +284,7 @@ public class ControladorCliente {
     }
 
     public void recibirDatosPartida(MultiplayerGame mg) {
-        VentanaListaPartidas vlp = VentanaListaPartidas.getInstancia();
-        vlp.setVisible(false);
+        this.actual.setVisible(false);
         mostrarResumenPartida(mg);
     }
 
@@ -293,7 +305,6 @@ public class ControladorCliente {
         ControladorCliente controlador = ControladorCliente.getInstancia();
         controlador.iniciar();
     }
-
 }
 
 class CreandoPartida {
